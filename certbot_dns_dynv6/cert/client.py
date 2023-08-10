@@ -44,6 +44,5 @@ class Authenticator(dns_common.DNSAuthenticator):
     def _cleanup(self, domain, validation_name, validation):
         self.records = self.api.get_list_of_records(self.zone_details['id'])
         for record in self.records:
-            if record['name'] == '_acme-challenge' and record['data'] == validation:
+            if record['name'] == '_acme-challenge':
                 self.api.del_record(self.zone_details['id'], record['id'])
-                break
