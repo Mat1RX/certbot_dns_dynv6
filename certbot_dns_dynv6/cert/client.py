@@ -23,8 +23,8 @@ class Authenticator(dns_common.DNSAuthenticator):
 
     def more_info(self):
         return (
-            "This plugin configures a DNS TXT record to respond to a dns-01 challenge using "
-            + "the DynV6 API."
+                "This plugin configures a DNS TXT record to respond to a dns-01 challenge using "
+                + "the DynV6 API."
         )
 
     def _setup_credentials(self):
@@ -42,4 +42,8 @@ class Authenticator(dns_common.DNSAuthenticator):
         self.record = self.api.add_txt_record(self.zone_details['id'], "_acme-challenge", validation)
 
     def _cleanup(self, domain, validation_name, validation):
-        self.api.del_record(zone_id=self.zone_details['id'], record_id=self.record['id'])
+        self.records = self.api.get_list_of_records(self.zone_details['id'])
+        for record in self.records:
+            if record['name'] == '_acme-challenge' and record['data'] == validation:
+                self.api.del_record(self.zone_details['id'], record['id'])
+                break
