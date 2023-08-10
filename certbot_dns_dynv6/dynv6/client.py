@@ -33,3 +33,4 @@ class DynV6:
         response = requests.delete(f'{self.api_url}/zones/{zone_id}/records/{record_id}',
                                    headers=self._base_headers, timeout=self.timeout)
         return response.status_code
+
